@@ -1,0 +1,75 @@
+<!doctype>
+<html>
+<head>
+	<title>register page</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js">	
+</script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+	<script type="text/javascript">
+$(document).ready(function(){
+//start here     
+
+    $("body").delegate("#btn","click",function(event){
+        alert("hello");
+        var fname=$("#fname").val();
+        var lname=$("#lname").val();
+        var mobile=$("#mobile").val();
+        var email=$("#email").val();
+        var password=$("#password").val();
+        alert(fname);
+         $.get({
+          url: '/register_user/',
+          type: 'GET',
+          cache:'false',
+          data:{ Fname : fname,Lname: lname,Mobile:mobile,Email:email,Password :password },
+          success: function(data) {
+          	$("#a1").empty();
+            $("#a2").text("Succesfully Register !!");
+            $("#a3").html("<a href='../user_login'><button>Login</button></a>");
+          },
+          failure: function(data) { 
+                alert('Got an error dude');
+            }
+        }); 
+    })
+//end here
+})	
+
+
+	</script>
+	<style>
+		label{
+			margin-left: 10px;
+			color:blue;
+			font-size: 18px;
+		}
+	</style>
+</head>
+<body id="body" style="background-image: url('a1.jpg')">
+	<div style="width:100%;min-height:60px;color:blue;background-color:green;">
+<a href="../"><button style="border-radius:10px;position:absolute;margin-top:15px;margin-left:20px;width:70px;height:25px;">Home</button></a>
+ <h1 style="margin-left:40%;">Register page</h1></div>
+<div id="a1" style="border-radius:10px;background-color: yellow;width: 33%;height: 400px;margin-left: 400px;margin-top: 20px;">
+<h3>Register here..</h3>	
+<label>First Name:</label>
+<input type='text' style='width: 95%;min-height: 30px;margin-left: 10px;border-radius: 5px;' id="fname"/>
+<label>Last Name:</label>
+<input type='text' style='width: 95%;min-height: 30px;margin-left: 10px;border-radius: 5px;' id="lname"/>
+<label>Email:</label>
+<input type='text' style='width: 95%;min-height: 30px;margin-left: 10px;border-radius: 5px;' id="email"/>
+<label>Mobile:</label>
+<input type='text' style='width: 95%;min-height: 30px;margin-left: 10px;border-radius: 5px;' id="mobile"/>
+<label>Password:</label>
+<input type='text' style='width: 95%;min-height: 30px;margin-left: 10px;border-radius: 5px;' id="password"/>
+<input type='submit' id="btn" style='float:right;margin-right:15px;width:80px;height:30px;border-radius: 10px;margin-top: 2px;'  value='Register'/>
+<a href="../user_login">
+	<button style='margin-right:15px;margin-left:10px;width:180px;height:30px;border-radius: 10px;margin-top: 2px;'>Allready Register ? </button>
+</a>
+ <a href="../forget"><button style='width:180px;height:30px;border-radius: 10px;margin-left:10px;margin-top: 1px;'>Forget Password</button></a>
+</div>
+<div id="a2">
+</div>
+<div id="a3">
+</div>
+</body>
+</html>

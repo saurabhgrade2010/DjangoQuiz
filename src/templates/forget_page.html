@@ -1,0 +1,86 @@
+<!doctype>
+<html>
+<head>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js">	
+</script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+	<script type="text/javascript">
+$(document).ready(function(){
+	var email="";
+	$("body").delegate("#btn1","click",function(event){
+     var p1=$("#pass1").val();
+     //alert(email);
+     var p2=$("#pass2").val();
+     //alert(p1);
+     //alert(p2);
+     $.get({
+          url: '/forget1/',
+          type: 'GET',
+          cache:'false',
+          data:{ P: p1,Email : email},
+          success: function(data) {
+          	if(data =="no")
+          	{
+          		$("#a3").empty();
+          		$("#a3").html("<h3 style='margin-left:400px;margin-top:100px;'>Password Not Forget !!</h3>");
+            $("#a1").html("<a href='../user_login'><button style='width:60px;height:28px;margin-left:450px;margin-top: 15px;background-color: LightGreen;border:1px solid Green;border-radius: 5px;'>Login</button></a>");
+          	}
+          	else{
+          	$("#a3").empty();
+          	$("#a3").html("<h3 style='margin-left:400px;margin-top:100px;'>Password Forget Succesfully!!</h3>");
+            $("#a1").html("<a href='../user_login'><button style='width:60px;height:28px;margin-left:450px;margin-top: 15px;background-color: LightGreen;border:1px solid Green;border-radius: 5px;'>Login</button></a>");
+          	}
+          },
+          failure: function(data) { 
+                alert('Got an error dude');
+            }
+        }); 
+
+	})
+	$("body").delegate("#btn","click",function(event){
+        email=$("#email").val();
+        //alert(email);
+         $.get({
+          url: '/forget_password/',
+          type: 'GET',
+          cache:'false',
+          data:{ Email:email},
+          success: function(data) {
+          	if(data == 'yes')
+          	{
+          		$("#a2").empty();
+          		$("#a2").hide();
+          		$("#a3").html("<div id='a3' style='position:absolute;margin-top: 100px;margin-left: 400px;border-radius:10px;background-color: white;width:450px;height: 300px;border:1px solid RoyalBlue;'> <div style='width:100%;height:40px;border-radius:4px;background-color: RoyalBlue;'><p style='font-size: 17px;color:white;margin-top: 10px;margin-left:20px;position: absolute;'>Forget Password</p></div><b style='margin-left: 20px;position:absolute;margin-top: 20px;'>New Password:</b><br/><input style='margin-left:20px;width:92%;height:34px;border-radius:5px;position: absolute;margin-top: 30px; ' type='text' id='pass1' name='pass1'><b style='margin-left: 20px;position:absolute;margin-top: 70px;'>Retype Password:</b><br/><input style='margin-left:20px;width:92%;height:34px;border-radius:5px;position: absolute;margin-top: 80px; ' type='password' id='pass2' name='pass2'><button style='float:right;margin-right: 20px;width:60px;height:28px;margin-top: 150px;background-color: LightGreen;border:1px solid Green;border-radius: 5px;' id='btn1' Email=email>Forget</button></div>");
+          	}
+          	else{
+          	alert("Email Not Exist");
+             }
+          },
+          failure: function(data) { 
+                alert('Got an error dude');
+            }
+        }); 
+	})
+})
+</script>
+</head>
+<body style="background-color: orange;">
+	<div style="width:100%;min-height:60px;color:blue;background-color:green;">
+	<a href="../"><button style="border-radius:10px;position:absolute;margin-top:15px;margin-left:20px;width:70px;height:25px;">Home</button></a>
+ <h1 style="margin-left:40%;">Forget page</h1></div>
+	<div id="a3">
+	</div>
+	<div id="a2" style="margin-top: 100px;margin-left: 400px;border-radius:10px;background-color: white;width:450px;height: 200px;border:1px solid RoyalBlue;">
+    <div style="width:100%;height:40px;border-radius:4px;background-color: RoyalBlue;">
+       <p style="font-size: 17px;color:white;margin-top: 10px;margin-left:20px;position: absolute;">Forget Password</p>
+    </div>
+     <b style="margin-left: 20px;position:absolute;margin-top: 20px;">Email:</b><br/>
+     <input style="margin-left:20px;width:30%;height:34px;border-radius:5px;position: absolute;margin-top: 30px; " type="text" id="email" name="email">
+     <button style="float:right;margin-right: 20px;width:60px;height:28px;margin-top: 90px;background-color: LightGreen;border-radius: 10px;" id="btn">Forget</button>
+		<a href="../user_login"><button style='width:80px;height:30px;border-radius: 10px;margin-left:10px;margin-top: 90px;background-color: LightGreen;'>Login</button></a>
+		</div>
+		<div id="a1">
+		</div>
+     
+</body>
+</html>

@@ -1,0 +1,19 @@
+
+{% block content %}
+<body style="background-color: pink;">
+<div style="width:100%;min-height:60px;color:blue;background-color:green;">
+	<a href="../"><button style="border-radius:10px;position:absolute;margin-top:15px;margin-left:20px;width:70px;height:25px;">Home</button></a>
+ <h1 style="margin-left:40%;">login page</h1></div>
+  <div style="position: absolute;margin-left: 30%;border-radius:20px;margin-top:3%;background-color: yellow;width:30%;min-height: 400px; ">
+   
+   <form action="/user_login_fun/" method='POST' style="margin-left:50px;margin-top: 60px;"> {% csrf_token %}
+    <input type='text' style='width: 80%;min-height: 30px;margin-top: 5px;border-radius: 5px;' name="email" placeholder="email"/>
+    <input type='text' style='width: 80%;min-height: 30px;margin-top: 5px;border-radius: 5px;' name="password" placeholder="password"/>
+    <input type='submit' style='width:80px;height:30px;border-radius: 10px;margin-top: 2px;'  value='submit'/>
+    </form>
+     <a href="../register"><button style='width:180px;height:30px;border-radius: 10px;margin-left:100px;margin-top: 1px;'>Create new account?</button></a>
+     <a href="../forget"><button style='width:180px;height:30px;border-radius: 10px;margin-left:100px;margin-top: 1px;'>Forget Password</button></a>
+  </div>	
+</body>
+
+{% endblock %}

@@ -1,0 +1,341 @@
+<!doctype html>
+<html>
+<head>
+	<title>main Quiz</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js">	
+</script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+<script>	
+$(document).ready(function(){
+$("#c1").hide();	
+	var qno=0;
+	var myjson;
+	var myjson_result={};
+	var myjson_choice={};
+	var maxqsn=0;
+	var result=0;
+	function insert_score(g)
+	{
+	    $.get({
+          url: '/score/',
+          type: 'GET',
+          cache:'false',
+          data:{ score : g },
+          success: function(data) {
+          		alert("hllll");
+          		}	
+          	})
+	}
+	function cal(){
+		var y=$('input[name=s]:checked', 
+                '#myForm').val();
+		if(y==1 || y==2 || y==3 || y==4)
+		{
+            var t="#d"+qno;
+            $(t).css("background-color","blue");
+			if(y==myjson[qno].ans)
+			{
+              result=result+1;
+            }
+            myjson_choice[qno]=y;
+		}
+	}
+  function milliSecondToTime(s) 
+  {
+        var ms = s % 1000;
+        s = (s - ms) / 1000;
+        var secs = s % 60;
+        s = (s - secs) / 60;
+        var mins = s % 60;
+        var hrs = (s - mins) / 60;
+        return  mins + ' Mins :' + secs + ' Secs';
+  }
+
+
+    $("body").delegate("#next","click",function(event){
+      if(qno<maxqsn)
+      {
+      	  cal();
+      	  qno=qno+1;
+      	  $( "#a1" ).empty();
+      	  $("#1").empty();
+      	  $("#2").empty();
+      	  $("#3").empty();
+      	  $("#4").empty();
+      	  $("#myForm").empty();
+          $("#a1").prepend("<form id='myForm'><div style='margin-top:50px;'>"+"<h1>"+qno+": "+myjson[qno].qsn+"</h1>"+
+           "<input type='radio' name='s' value='1' id='1'>"+ myjson[qno].ans1 +"<br>"+
+           "<input type='radio' name='s' value='2' id='2'>"+ myjson[qno].ans2 +"<br>"+
+           "<input type='radio' name='s' value='3' id='3'>"+ myjson[qno].ans3 +"<br>"+
+           "<input type='radio' name='s' value='4' id='4'>"+ myjson[qno].ans4 +"<br>"+
+           "</div></form>");
+       }  
+    })
+
+
+    $("body").delegate("#a5","click",function(event)
+    {
+      $("#c1").show();
+      $("#p4").hide();
+      var k=maxqsn;	
+       $("#a2").hide();
+       $("#a3").hide();
+      for(var i=maxqsn;i>0;--i)
+      {
+      	var y=myjson_result[i];
+      	//alert(y);
+      	if(y==1 || y==2 || y== 3 || y==4)
+      	{
+      		$("#a6").prepend("<tr>");
+      	    $("#a6").prepend("<td><button id='b4' style='background-color:LighGray;'>4</button></td>");
+      	    $("#a6").prepend("<td><button id='b3' style='background-color:LighGray;'>3</button></td>");
+      	    $("#a6").prepend("<td><button id='b2' style='background-color:LighGray;'>2</button></td>");
+      	    $("#a6").prepend("<td><button id='b1'style='background-color:LighGray;'>1</button></td>");
+      	    $("#a6").prepend("<td><button id='b' style='background-color:LighGray;'>i</button></td>");
+      	    $("#a6").prepend("</tr>");
+      	    var z=myjson_choice[i];
+      	    if(z==1 ||z==2 || z==3 || z==4 )
+      	    {
+      	    	if(y==z)
+      	    	{ 
+      	    		var x="#b"+y;
+                     $(x).css("background-color","green"); 
+                     $("#b").text(k--); 
+      	    	}
+      	    	else
+      	    	{
+      	    		var x="#b"+y;
+      	    		var w="#b"+z;
+      	    		$(x).css("background-color","green");
+      	    		$(w).css("background-color","red");  
+      	    		 $("#b").text(k--); 
+      	    	}
+
+      	    } 
+      	    else
+      	    {
+      	    	$("#b").text(k--).css("color","blue"); 
+      	    }
+      	}
+      }
+    })
+
+
+
+  $("body").delegate("#prev","click",function(event){
+     if(qno>1){
+      	  cal();
+      	  qno=qno-1;
+      	  $( "#a1" ).empty();
+      	  $("#1").empty();
+      	  $("#2").empty();
+      	  $("#3").empty();
+      	  $("#4").empty();
+      	  $("#myForm").empty();
+          $("#a1").prepend("<form id='myForm'><div style='margin-top:50px;'>"+"<h1>"+qno+": "+myjson[qno].qsn+"</h1>"+
+           "<input type='radio' name='s' value='1' id='1'>"+ myjson[qno].ans1 +"<br>"+
+           "<input type='radio' name='s' value='2' id='2'>"+ myjson[qno].ans2 +"<br>"+
+           "<input type='radio' name='s' value='3' id='3'>"+ myjson[qno].ans3 +"<br>"+
+           "<input type='radio' name='s' value='4' id='4'>"+ myjson[qno].ans4 +"<br>"+
+           "</div></form>");
+       }
+    })
+
+	$("body").delegate("#btn","click",function(event){
+      var maxtime=20000;
+      var storeTimeInterval = setInterval(function(){
+      if(maxtime>=0){
+         var time=milliSecondToTime(maxtime);
+         $("#time").text(time);
+         maxtime-=1000;
+        }
+		else{
+		   $("#time").text("");
+		   $("#time").text("Thank you!").css({"color":"white",
+          		"font-size" :"40px"
+            });
+		    cal();
+            $( "#a1" ).empty();
+		    $( "#a2" ).empty();
+		    $( "#a3" ).empty();
+		     $("#p4").html("<button id='a5' style='width:100px;height:30px;cursor:pointer;'>show result</button>"); 
+		     $("#p5").html("<a href=''><button style='width:150px;height:30px;cursor:pointer;'>Take Another Test ?</button></a>"); 
+		    var g=(result/maxqsn)*100;
+		    insert_score(g); 
+		    $("#p3").text("Your Score is "+g+"%").css({"color":"black",
+          		"font-size" :"20px"
+            });
+		   clearInterval(storeTimeInterval) ;
+		}
+		 
+     },1000);
+	  $("#sub_type").hide();
+	  $("#btn").hide();
+	  $("#a4").hide();
+	  var x=0;
+	  var p=$("#sub_type").val();
+	  if(p=="Data Structure")
+	  {
+	  	x=1;
+	  }
+	  else if(p=="Mathematics")
+	  {
+	  	x=2;
+	  }
+	  x=1;
+	  //alert(p);
+      $.get({
+          url: '/quizz/',
+          type: 'GET',
+          cache:'false',
+          data:{ sub_type : x },
+          success: function(json) {
+          		//alert(json[1].qsn);
+          		var i,j,k=1;
+          		myjson=json;
+          		for(j in json)
+          		{
+                  maxqsn=maxqsn+1;
+                  myjson_result[k]=json[j].ans;
+                  k=k+1;
+          		}
+          		
+          		for(var i=maxqsn;i>0;--i)
+          		{
+          			var x="d"+i;
+          			$("#s1").prepend("<button id='d' style='background-color:blue;'>1</button><br/>");
+          			$("#d").attr("id",x);
+          			var y="#"+x;
+          	        $(y).text(i).css("background-color","red");
+          
+          		}
+          		qno=qno+1;
+          		for(i in json){
+          	     $("#a1").prepend("<form id='myForm'><div style='margin-top:50px;'>"+"<h1>"+qno+": "+json[i].qsn+"</h1>"+
+                 "<input type='radio' name='s' value='1' id='1'>"+ json[i].ans1 +"<br>"+
+                 "<input type='radio' name='s' value='2' id='2'>"+ json[i].ans2 +"<br>"+
+                 "<input type='radio' name='s' value='3' id='3'>"+ json[i].ans3 +"<br>"+
+                 "<input type='radio' name='s' value='4' id='4'>"+ json[i].ans4 +"<br>"+
+          		 "</div></form>");
+          		 break;
+          	    }
+          	$("#a2").html("<button id='prev' style='position:absolute;margin-top:20px;margin-left:40px;width:60px;height: 20px;border-radius: 10px;background-color:red;'>prev</button>");
+          	$("#a3").html("<button id='next' style='position:absolute;margin-top:20px;margin-left:220px;width:60px;height: 20px;border-radius: 10px;background-color:red;'>next</button> ");
+           },
+           failure: function(json) { 
+                alert('Got an error dude');
+            }
+        }); 
+    })
+}); 
+</script>
+<style>
+  table,th, td {
+  border: 1px solid black;
+  width:40px;
+  height: 30px;
+  border-collapse: collapse;
+}
+</style>
+<style>
+	button{
+		width: 50px;
+		height: 50px;
+	}
+	.sec1 {
+		background-color:Aqua;
+		width: 20%;
+		height:98%;
+		position: absolute;
+	}
+	.sec2 {
+		background-color:CornflowerBlue;
+		width:58%;
+		margin-left: 21%;
+		position: absolute;
+		height: 98%;
+	}
+	.sec4 {
+		background-color:orange;
+		width:18%;
+		margin-left: 80%;
+		position: absolute;
+		height: 98%;
+	}
+	.sec3{
+		width: 250px;
+		height: 30px;
+		margin-top: 5px;
+		border-radius: 10px;
+		border:2px solid black;
+		border-color: black;
+	}
+    .sec3:hover{
+    	background-color:white;
+    }
+	</style>
+</head>
+<body id="body" style="background-color:black;">
+	<div class="sec1">
+	       <div style="margin-top:20px;margin-left: 10px; ">
+		        <select name="subject" id="sub_type" class="sec3">
+		            <option value="........">Select</option>	
+                    <option value="Data Structure">Data Structure</option>
+                    <option value="C">C</option>
+                    <option value="Java">Java</option>
+                    <option value="Compiler">Compiler</option>
+                    <option value="Python">Python</option>
+                    <option value="C#">C#</option>
+                    <option value="OS">Operating System</option>
+                    <option value="Ruby">Ruby</option>
+                    <option value="ML">ML</option>
+                    <option value="DBMS">DBMS</option>
+                    <option value="Sql">Sql</option>
+                </select>
+	                <button id="btn" style="width:80px;height: 25px;margin-top:5px;border-radius: 10px;border:2px solid black;background-color:pink;float:right;">submit</button>
+	       </div>
+	            <div style="margin-left: 40px;margin-top: 100px;font-size:30px;" id="time">
+	            </div>
+	            <div style="margin-left: 40px;margin-top: 100px;font-size:20px;" id="p3">
+	            </div>
+	            <div style="margin-left: 40px;margin-top: 100px;font-size:30px;" id="p4">
+	            </div>
+	            <div style="margin-left: 30px;margin-top: 10px;font-size:30px;" id="p5">
+	            </div>
+	            <a href="../main_page"><button style="width:auto;height:30px;margin-left: 30px;margin-top: 10px;font-size:20px;">Home
+	            </button></a>
+    </div>   	
+   	    <div class="sec2">
+   		   <h1 id="a4"> Quiz Start Here </h1>
+           <div style="margin-left: 80px;" id="a1"></div>
+	       <div style="margin-top: 0px;margin-left: 30px;" id="time2"></div> 
+          <div>
+	       <label id="a2"></label>
+	       <label id="a3"></label><br/>
+           <div id="c1" style="margin-left: 270px;margin-top:50px;">	
+           <table>
+            <tr>
+             <th>Qno</th>	
+             <th>1st</th>
+             <th>2nd</th>
+             <th>3nd</th>
+             <th>4nd</th>
+            </tr>
+            <tr>
+            <td colspan="5" id="a6"></td>
+            </tr>
+          </table>
+      </div>
+	      </div> 
+   	    </div>
+
+
+
+   	    <div class="sec4">
+
+        <div id="s1">
+        </div>
+
+   	    </div>
+</body>
+</html>
